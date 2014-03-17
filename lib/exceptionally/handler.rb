@@ -17,9 +17,11 @@ module Exceptionally
     def log
       # Log 5xx errors
       if @status >= 500 && @error
-        # Support Airbrake and New Relic out of box
-        Airbrake.notify(@error, :parameters => @params) if defined?(Airbrake) && Airbrake.respond_to?(:notify) && Rails.env.production?
-        NewRelic::Agent.notice_error(@error) if defined?(NewRelic) && defined?(NewRelic::Agent) && NewRelic::Agent.respond_to?(:notice_error) && Rails.env.production?
+        # Support Airbrake and New Relic out of box, but only in production
+        if Rails.env.production?
+          Airbrake.notify(@error, :parameters => @params) if defined?(Airbrake) && Airbrake.respond_to?(:notify)
+          NewRelic::Agent.notice_error(@error) if defined?(NewRelic) && defined?(NewRelic::Agent) && NewRelic::Agent.respond_to?(:notice_error)
+        end
 
         Rails.logger.error(@error.to_s)
         Rails.logger.error("Parameters: #{@params.to_s}") unless @params.blank?
