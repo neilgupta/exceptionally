@@ -2,9 +2,9 @@
 
 [https://www.github.com/neilgupta/exceptionally](https://www.github.com/neilgupta/exceptionally)
 
-Your API needs to return meaningful errors instead of a static error page. Exceptionally abstracts your exception logic to make raising and returing those errors easier.
+Exceptionally abstracts your exception logic to make raising and returning meaningful errors in Ruby on Rails easier. It is primarily designed for API-only applications that need to return descriptive JSON error messages, rather than static HTML error pages.
 
-Just raise the appropriate exception and Exceptionally will handle the rest.
+Just raise the appropriate exception anywhere in your code and Exceptionally will handle the rest.
 
 ```ruby
 raise Exceptionally::Unauthorized.new("Incorrect token")
@@ -26,7 +26,7 @@ To get started with Exceptionally, just add the following to your `Gemfile`:
 gem 'exceptionally'
 ```
 
-Exceptionally has only be tested with Rails 4, but it should work with Rails 3+ in theory.
+Exceptionally has only been tested with Rails 4, but it should work with Rails 3+ in theory ;)
 
 ## Features
 
@@ -38,19 +38,23 @@ If you raise a 500-level error, Exceptionally will log the error, stacktrace, an
 
 ### Customizable
 
+#### Add a custom error handler
+
 Need to run your own logging code or do something else with the errors before they're returned to the user? Just add the following to `config/initializers/exceptionally.rb`:
 
 ```ruby
 Exceptionally::Handler.before_render do |message, status, error, params|
   # Place your custom code here
-  # message is a string of what went wrong
+  # message is a string description of what went wrong
   # status is an integer of the HTTP status code
   # error is a Ruby Exception object
   # params is a hash of the parameters passed to your controller
 end
 ```
 
-You can also override the returned response by adding a `render_error` method to your controller. For example, if you want to include the HTTP status code in the returned JSON, you could add:
+#### Override output formatting
+
+You can also override the returned response by adding a `render_error` method to your controller. For example, if you want to include the HTTP status code in the returned JSON, you can do:
 
 ```ruby
 def render_error(message, status)
@@ -58,16 +62,30 @@ def render_error(message, status)
 end
 ```
 
-You could also return XML or whatever other format is relevant to your application instead of JSON.
+You could also return HTML, XML, or whatever other format is relevant to your application.
 
-Exceptionally will catch generic Exceptions, ArgumentErrors, ActiveRecord::RecordNotFound, ActiveRecord::RecordInvalid, and Exceptionally errors. If there are additional errors that you want to catch and assign status codes to, you can just add the following to the top of your `application_controller.rb`:
+`render_error` must accept `message`, a string description of the error, and `status`, an integer HTTP status code.
+
+#### Add custom errors
+
+Exceptionally will handle the following errors by default:
+
+* generic Exceptions
+* ArgumentErrors
+* ActiveRecord::RecordNotFound
+* ActiveRecord::RecordInvalid
+* Apipie::ParamMissing (if using [Apipie](https://github.com/Apipie/apipie-rails))
+* Apipie::ParamInvalid (if using [Apipie](https://github.com/Apipie/apipie-rails))
+* Exceptionally errors (see below for available errors)
+
+If there are additional errors that you want to assign status codes to and pass to Exceptionally, you can add the following to the top of your `application_controller.rb`:
 
 ```ruby
-# Catch Apipie::ParamMissing errors and pass them to Exceptionally
-rescue_from Apipie::ParamMissing, :with => :missing_param
+# Catch MyCustomModule::BadRequestException errors and pass them to Exceptionally
+rescue_from MyCustomModule::BadRequestException, :with => :custom_400_error
 
-# Raise 400 error
-def missing_param(error)
+# Tell Exceptionally you want this treated as a 400 error
+def custom_400_error(error)
   pass_to_error_handler(error, 400)
 end
 ```
@@ -103,9 +121,13 @@ You can raise the following HTTP errors. All of them accept an optional string t
 * Exceptionally::GatewayTimeout
 * Exceptionally::HttpVersionNotSupported
 
-You can also raise an error with just the HTTP status code by using `Exceptionally::Http404`. Status codes 400-505 are available.
+You can also raise an error with just the HTTP status code by using `Exceptionally::Http404`. Status codes 400-417 and 500-505 are available.
 
 **[See descriptions of all status codes](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)**
+
+## Why use Exceptionally instead of the built-in Rails `render`?
+
+By abstracting all of the exception handling logic, Exceptionally DRY's up your code and makes it easier to read. If you later decide to change the format of your error responses, you just need to edit `render_error` in one place. Exceptionally also transparently handles ActiveRecord, Apipie, and other generic exceptions for you, so that your app is less likely to crash. Additionally, you get a bunch of logging and error reporting functionality for free.
 
 ## Author
 

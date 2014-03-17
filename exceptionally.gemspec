@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.authors     = "Neil Gupta"
   s.email       = "neil@metamorphium.com"
   s.homepage    = "https://github.com/neilgupta/exceptionally"
-  s.summary     = "Exceptionally easier API errors"
-  s.description = "Your API needs to return meaningful errors instead of a static error page. Exceptionally abstracts your exception logic to make raising and returing those errors easier."
+  s.summary     = "Exceptionally simple Rails Exception library"
+  s.description = "Exceptionally abstracts your exception logic to make raising and returning meaningful errors in Ruby on Rails easier."
   s.license     = 'MIT'
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
