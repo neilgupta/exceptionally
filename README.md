@@ -36,21 +36,27 @@ In addition to seamlessly abstracting your exception logic and returning clean J
 
 ### Logging
 
-If you raise a 500-level error, Exceptionally will log the error, stacktrace, and relevant parameters to Rails.logger. Additionally, Exceptionally supports [Airbrake](http://airbrake.io) and [New Relic](http://newrelic.com) by default, and will notify those services if you have their gems set up.
+If you raise a 500-level error, Exceptionally will log the error, backtrace, and relevant parameters to Rails.logger. Additionally, Exceptionally supports [Airbrake](http://airbrake.io) and [New Relic](http://newrelic.com) by default, and will notify those services if you have their gems set up.
 
 ### Customizable
 
 #### Add a custom error handler
 
-Need to run your own logging code or do something else with the errors before they're returned to the user? Just add the following to `config/initializers/exceptionally.rb`:
+Need to add more logging, use [BacktraceCleaner](http://api.rubyonrails.org/classes/ActiveSupport/BacktraceCleaner.html), or do something else with the errors before they're returned to the user? Just add the following to `config/initializers/exceptionally.rb`:
 
 ```ruby
 Exceptionally::Handler.before_render do |message, status, error, params|
   # Place your custom code here
   # message is a string description of what went wrong
   # status is an integer of the HTTP status code
-  # error is a Ruby Exception object
+  # error is the Exception object
   # params is a hash of the parameters passed to your controller
+
+  # For example, you could:
+  bc = BacktraceCleaner.new
+  bc.add_filter   { |line| line.gsub(Rails.root, '') }
+  bc.add_silencer { |line| line =~ /mongrel|rubygems/ }
+  bc.clean(error.backtrace) # will strip the Rails.root prefix and skip any lines from mongrel or rubygems from your backtrace
 end
 ```
 
