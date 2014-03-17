@@ -2,6 +2,8 @@
 
 [https://www.github.com/neilgupta/exceptionally](https://www.github.com/neilgupta/exceptionally)
 
+[![Gem Version](https://badge.fury.io/rb/exceptionally.png)](http://badge.fury.io/rb/exceptionally)
+
 Exceptionally abstracts your exception logic to make raising and returning meaningful errors in Ruby on Rails easier. It is primarily designed for API-only applications that need to return descriptive JSON error messages, rather than static HTML error pages.
 
 Just raise the appropriate exception anywhere in your code and Exceptionally will handle the rest.
