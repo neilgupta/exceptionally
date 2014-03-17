@@ -10,11 +10,20 @@ module Exceptionally
       rescue_from Exceptionally::Error, :with => :exceptionally_handler
       rescue_from ActiveRecord::RecordNotFound, :with => :missing_record_handler
       rescue_from ActiveRecord::RecordInvalid, :with => :record_invalid_handler
+      if defined?(Apipie)
+        rescue_from Apipie::ParamMissing, :with => :missing_param
+        rescue_from Apipie::ParamInvalid, :with => :missing_param
+      end
     end
 
     # Raise custom error
     def exceptionally_handler(error)
       pass_to_error_handler(error)
+    end
+
+    # Raise 400 error
+    def missing_param(error)
+      pass_to_error_handler(error, 400)
     end
 
     # Raise 404 error
