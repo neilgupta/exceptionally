@@ -122,6 +122,7 @@ You can raise the following HTTP errors. All of them accept an optional string t
 * Exceptionally::UnsupportedMedia
 * Exceptionally::RangeNotSatisfiable
 * Exceptionally::ExpectationFailed
+* Exceptionally::UnprocessableEntity
 * Exceptionally::Error
 * Exceptionally::NotImplemented
 * Exceptionally::BadGateway
@@ -129,7 +130,7 @@ You can raise the following HTTP errors. All of them accept an optional string t
 * Exceptionally::GatewayTimeout
 * Exceptionally::HttpVersionNotSupported
 
-You can also raise an error with just the HTTP status code by using `Exceptionally::Http404`. Status codes 400-417 and 500-505 are available.
+You can also raise an error with just the HTTP status code by using `Exceptionally::Http404`. Status codes 400-417, 422, and 500-505 are available.
 
 **[See descriptions of all status codes](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)**
 
