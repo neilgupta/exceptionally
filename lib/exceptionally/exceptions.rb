@@ -125,6 +125,12 @@ module Exceptionally
     end
   end
 
+  class UnprocessableEntity < Error
+    def initialize(message = nil)
+      super(message, 422, "Unprocessable Entity")
+    end
+  end
+
   class NotImplemented < Error
     def initialize(message = nil)
       super(message, 501, "Not Implemented")
@@ -173,6 +179,7 @@ module Exceptionally
   class Http415 < UnsupportedMedia; end
   class Http416 < RangeNotSatisfiable; end
   class Http417 < ExpectationFailed; end
+  class Http422 < UnprocessableEntity; end
   class Http500 < Error; end
   class Http501 < NotImplemented; end
   class Http502 < BadGateway; end
