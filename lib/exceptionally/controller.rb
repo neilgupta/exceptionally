@@ -12,7 +12,7 @@ module Exceptionally
       rescue_from ActiveRecord::RecordInvalid, :with => :record_invalid_handler
       if defined?(Apipie)
         rescue_from Apipie::ParamMissing, :with => :missing_param
-        rescue_from Apipie::ParamInvalid, :with => :missing_param
+        rescue_from Apipie::ParamInvalid, :with => :invalid_param
       end
     end
 
@@ -34,6 +34,11 @@ module Exceptionally
     # Raise 409 error
     def record_invalid_handler(error)
       pass_to_error_handler(error, 409)
+    end
+    
+    # Raise 422 error
+    def invalid_param(error)
+      pass_to_error_handler(error, 422)
     end
 
     def pass_to_error_handler(error, status = nil)
