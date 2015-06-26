@@ -36,13 +36,21 @@ In addition to seamlessly abstracting your exception logic and returning clean J
 
 ### Logging
 
-If you raise a 500-level error, Exceptionally will log the error, backtrace, and relevant parameters to Rails.logger. Additionally, Exceptionally supports [Airbrake](http://airbrake.io) and [New Relic](http://newrelic.com) by default, and will notify those services if you have their gems set up.
+If you raise a 500-level error, Exceptionally will log the error, backtrace, and relevant parameters to Rails.logger.
+
+### Error Reporting
+
+Exceptionally supports reporting 500-level errors to [Sentry](http://getsentry.com), [Airbrake](http://airbrake.io), and [New Relic](http://newrelic.com) out of the box, and will notify those services if you have their gems set up. By default, this is only enabled in your `production` environment, but you can control this by setting in `config/initializers/exceptionally.rb`:
+
+```ruby
+Exceptionally.report_errors = true
+```
 
 ### Customizable
 
 #### Add a custom error handler
 
-Need to add more logging, use [BacktraceCleaner](http://api.rubyonrails.org/classes/ActiveSupport/BacktraceCleaner.html), or do something else with the errors before they're returned to the user? Just add the following to `config/initializers/exceptionally.rb`:
+Need to add more logging, integrate a different service than those listed above, use [BacktraceCleaner](http://api.rubyonrails.org/classes/ActiveSupport/BacktraceCleaner.html), or do something else with the errors before they're returned to the user? Just add the following to `config/initializers/exceptionally.rb`:
 
 ```ruby
 Exceptionally::Handler.before_render do |message, status, error, params|
