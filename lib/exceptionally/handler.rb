@@ -30,5 +30,5 @@ module Exceptionally
         Rails.logger.error(@error.backtrace.join("\n")) unless @error.backtrace.blank?
       end
     end
-  end  
+  end
 end

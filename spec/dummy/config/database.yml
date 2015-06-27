@@ -1,0 +1,20 @@
+default: &default
+  adapter: nulldb
+  encoding: unicode
+  # For details on connection pooling, see rails configuration guide
+  # http://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: 5
+
+development:
+  <<: *default
+  database: dummy_development
+
+test:
+  <<: *default
+  database: dummy_test
+
+production:
+  <<: *default
+  database: dummy_production
+  username: dummy
+  password: <%= ENV['DUMMY_DATABASE_PASSWORD'] %>

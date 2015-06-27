@@ -14,9 +14,13 @@ Gem::Specification.new do |s|
   s.description = "Exceptionally abstracts your exception logic to make raising and returning meaningful errors in Ruby on Rails easier."
   s.license     = 'MIT'
 
-  s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
-  s.test_files = Dir["test/**/*"]
+  s.files = Dir["lib/**/*", "MIT-LICENSE", "README.md"]
+  s.test_files = Dir["spec/**/*"]
 
   s.add_dependency "rails", ">= 3.0.0", "< 5.0"
 
+  s.add_development_dependency 'bundler'
+  s.add_development_dependency 'rake'
+  s.add_development_dependency 'rspec-rails'
+  s.add_development_dependency 'activerecord-nulldb-adapter'
 end
