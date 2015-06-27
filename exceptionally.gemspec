@@ -19,8 +19,5 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", ">= 3.0.0", "< 5.0"
 
-  s.add_development_dependency 'bundler'
-  s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec-rails'
-  s.add_development_dependency 'activerecord-nulldb-adapter'
 end
