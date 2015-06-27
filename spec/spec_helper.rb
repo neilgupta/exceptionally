@@ -18,3 +18,9 @@ RSpec.configure do |c|
 end
 
 ActiveRecord::Base.establish_connection :adapter => :nulldb
+
+class Raven
+  def capture_exception(error); end
+end
+
+class Airbrake; end

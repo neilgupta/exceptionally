@@ -48,4 +48,42 @@ describe ActionController, :type => :controller do
     get :index
     expect(temp_var).to eq(nil)
   end
+
+  describe 'when only Raven is defined' do
+    describe 'and report_errors is true' do
+      before do
+        Exceptionally.report_errors = true
+      end
+
+      it 'reports errors for a 500 error' do
+        expect(Raven).to receive(:capture_exception)
+        get :index
+      end
+
+      it 'does not report errors for a 400 error' do
+        allow(controller).to receive(:index).and_raise(Exceptionally::BadRequest.new)
+
+        expect(Raven).to_not receive(:capture_exception)
+        get :index
+      end
+
+      it 'does not report errors to Airbrake' do
+        expect(Airbrake).to receive(:respond_to?).at_least(:once)
+        expect(Airbrake).to_not receive(:notify)
+
+        get :index
+      end
+    end
+
+    describe 'and report_errors is false' do
+      before do
+        Exceptionally.report_errors = false
+      end
+
+      it 'does not report errors for a 500 error' do
+        expect(Raven).to_not receive(:capture_exception)
+        get :index
+      end
+    end
+  end
 end

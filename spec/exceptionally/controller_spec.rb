@@ -3,7 +3,7 @@ require 'spec_helper'
 describe ActionController, :type => :controller do
   controller do
     def index
-      raise ArgumentError.new('some error')
+      raise ArgumentError.new
     end
   end
 
@@ -12,7 +12,15 @@ describe ActionController, :type => :controller do
   end
 
   describe "when a controller raises an error" do
-    it 'returns a JSON error message with 500 status' do
+    it 'returns a 500 response when a general error is raised' do
+      get :index
+      expect(response.status).to eq(500)
+      expect(JSON.parse(response.body)['error']).to eq('ArgumentError')
+    end
+
+    it 'returns a custom error message when available' do
+      allow(controller).to receive(:index).and_raise(ArgumentError.new('some error'))
+
       get :index
       expect(response.status).to eq(500)
       expect(JSON.parse(response.body)['error']).to eq('some error')
