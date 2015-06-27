@@ -40,7 +40,7 @@ If you raise a 500-level error, Exceptionally will log the error, backtrace, and
 
 ### Error Reporting
 
-Exceptionally supports reporting 500-level errors to [Sentry](http://getsentry.com), [Airbrake](http://airbrake.io), and [New Relic](http://newrelic.com) out of the box, and will notify those services if you have their gems set up. By default, this is only enabled in your `production` environment, but you can control this by setting in `config/initializers/exceptionally.rb`:
+Exceptionally supports reporting 500-level errors to [Sentry](http://getsentry.com), [Airbrake](http://airbrake.io), and [New Relic](http://newrelic.com) out of the box, and will notify those services if you have their gems installed. By default, this is only enabled in your `production` environment, but you can control this by setting in `config/initializers/exceptionally.rb`:
 
 ```ruby
 Exceptionally.report_errors = true
