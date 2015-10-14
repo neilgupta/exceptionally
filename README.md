@@ -92,6 +92,7 @@ Exceptionally will handle the following errors by default:
 * ActiveRecord::RecordInvalid
 * Apipie::ParamMissing (if using [Apipie](https://github.com/Apipie/apipie-rails))
 * Apipie::ParamInvalid (if using [Apipie](https://github.com/Apipie/apipie-rails))
+* Pundit::NotAuthorizedError (if using [Pundit](https://github.com/elabs/pundit))
 * Exceptionally errors (see below for available errors)
 
 If there are additional errors that you want to assign status codes to and pass to Exceptionally, you can add the following to the top of your `application_controller.rb`:
@@ -152,4 +153,4 @@ Neil Gupta [http://metamorphium.com](http://metamorphium.com)
 
 ## License
 
-The MIT License (MIT) Copyright (c) 2014 Neil Gupta. See [MIT-LICENSE](https://raw.github.com/neilgupta/exceptionally/master/MIT-LICENSE)
+The MIT License (MIT) Copyright (c) 2015 Neil Gupta. See [MIT-LICENSE](https://raw.github.com/neilgupta/exceptionally/master/MIT-LICENSE)
