@@ -147,6 +147,10 @@ You can also raise an error with just the HTTP status code by using `Exceptional
 
 By abstracting all of the exception handling logic, Exceptionally DRY's up your code and makes it easier to read. If you later decide to change the format of your error responses, you just need to edit `render_error` in one place. Exceptionally also transparently handles ActiveRecord, Apipie, and other generic exceptions for you, so that your app is less likely to crash. Additionally, you get a bunch of logging and error reporting functionality for free.
 
+## Changelog
+
+See [changelog](https://github.com/neilgupta/exceptionally/blob/master/CHANGELOG.md) to check for breaking changes between versions.
+
 ## Author
 
 Neil Gupta [http://metamorphium.com](http://metamorphium.com)
