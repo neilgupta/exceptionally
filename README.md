@@ -73,14 +73,14 @@ end
 You can also override the returned response by adding a `render_error` method to your controller. For example, if you want to include the HTTP status code in the returned JSON, you can do:
 
 ```ruby
-def render_error(message, status)
-  render json: {error_message: message, error_status: status}, status: status
+def render_error(error, status)
+  render json: {error_message: error.message, error_status: status}, status: status
 end
 ```
 
 You could also return HTML, XML, or whatever other format is relevant to your application.
 
-`render_error` must accept `message`, a string description of the error, and `status`, an integer HTTP status code.
+`render_error` must accept `error`, the StandardError object that was raised, and `status`, an integer HTTP status code.
 
 #### Add custom errors
 
