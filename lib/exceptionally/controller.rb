@@ -43,7 +43,7 @@ module Exceptionally
     def record_invalid_handler(error)
       pass_to_error_handler(error, 409)
     end
-    
+
     # Raise 422 error
     def invalid_param(error)
       pass_to_error_handler(error, 422)
@@ -52,11 +52,11 @@ module Exceptionally
     def pass_to_error_handler(error, status = nil)
       status ||= error.try(:status) || 500
       Exceptionally::Handler.new(error.message, status, error, params)
-      render_error(error.message, status)
+      render_error(error, status)
     end
 
-    def render_error(message, status)
-      render json: {error: message}, status: status
+    def render_error(error, status)
+      render json: {error: error.message}, status: status
     end
 
   end
