@@ -14,9 +14,6 @@ module Exceptionally
         rescue_from Apipie::ParamMissing, :with => :missing_param
         rescue_from Apipie::ParamInvalid, :with => :invalid_param
       end
-      if defined?(Pundit)
-        rescue_from Pundit::NotAuthorizedError, with: :not_authorized_error
-      end
     end
 
     # Raise custom error
@@ -27,11 +24,6 @@ module Exceptionally
     # Raise 400 error
     def missing_param(error)
       pass_to_error_handler(error, 400)
-    end
-
-    # Raise 401 error
-    def not_authorized_error(error)
-      pass_to_error_handler(error, 401)
     end
 
     # Raise 404 error

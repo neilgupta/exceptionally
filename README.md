@@ -92,22 +92,21 @@ Exceptionally will handle the following errors by default:
 * ActiveRecord::RecordInvalid
 * Apipie::ParamMissing (if using [Apipie](https://github.com/Apipie/apipie-rails))
 * Apipie::ParamInvalid (if using [Apipie](https://github.com/Apipie/apipie-rails))
-* Pundit::NotAuthorizedError (if using [Pundit](https://github.com/elabs/pundit))
 * Exceptionally errors (see below for available errors)
 
 If there are additional errors that you want to assign status codes to and pass to Exceptionally, you can add the following to the top of your `application_controller.rb`:
 
 ```ruby
-# Catch MyCustomModule::BadRequestException errors and pass them to Exceptionally
-rescue_from MyCustomModule::BadRequestException, :with => :custom_400_error
+# Catch SomeGem::NotAuthorizedError errors and pass them to Exceptionally
+rescue_from SomeGem::NotAuthorizedError, :with => :not_authorized_error
 
-# Tell Exceptionally you want this treated as a 400 error
-def custom_400_error(error)
-  pass_to_error_handler(error, 400)
+# Tell Exceptionally you want this treated as a 401 error
+def not_authorized_error(error)
+  pass_to_error_handler(error, 401)
 end
 ```
 
-`pass_to_error_handler` takes a Ruby Exception object and an optional status code. If no status code is provided, it will default to 500.
+`pass_to_error_handler` takes a Ruby Exception object and a status code. If no status code is provided, it will default to 500.
 
 ## Available Errors
 
