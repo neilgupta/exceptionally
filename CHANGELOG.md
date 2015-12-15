@@ -2,13 +2,17 @@
 
 [https://www.github.com/neilgupta/exceptionally](https://www.github.com/neilgupta/exceptionally)
 
+## v1.4.0 (12/15/2015)
+
+* Remove built-in support for `Pundit::NotAuthorizedError` errors
+
 ## v1.3.0 (10/24/2015)
 
 * Pass the whole error object to `render_error` rather than just the error message, allowing for more customization of what's rendered. This is a **breaking change** if you depend on the old `render_error` or `pass_to_error_handler` methods!
 
 ## v1.2.0 (10/14/2015)
 
-* Add built-in support for Pundit::NotAuthorizedError errors
+* Add built-in support for `Pundit::NotAuthorizedError` errors
 * Drop vestigial development dependencies
 
 ## v1.1.0 (06/27/2015)
