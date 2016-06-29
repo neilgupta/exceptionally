@@ -9,6 +9,18 @@ describe ActionController, :type => :controller do
 
   before do
     routes.draw { get 'index' => "anonymous#index" }
+    Rails.application.config.filter_parameters = [:password]
+  end
+
+  it 'filters password parameter' do
+    temp_params = nil
+    Exceptionally::Handler.before_render do |message, status, error, params|
+      temp_params = params
+    end
+
+    get :index, username: 'bob', password: '123456'
+    expect(temp_params['username']).to eq('bob')
+    expect(temp_params['password']).to eq('[FILTERED]')
   end
 
   it 'logs 5xx errors' do
@@ -33,20 +45,20 @@ describe ActionController, :type => :controller do
   end
 
   it 'calls handler before logging an error when set' do
-    temp_var = nil
+    temp_message = nil
     Exceptionally::Handler.before_render do |message, status, error, params|
-      temp_var = message
+      temp_message = message
     end
 
     get :index
-    expect(temp_var).to eq('Internal Server Error')
+    expect(temp_message).to eq('Internal Server Error')
   end
 
   it 'does not call handler before logging an error when none is proved' do
-    temp_var = nil
+    temp_message = nil
 
     get :index
-    expect(temp_var).to eq(nil)
+    expect(temp_message).to eq(nil)
   end
 
   describe 'when only Raven is defined' do

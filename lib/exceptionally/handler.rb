@@ -6,8 +6,11 @@ module Exceptionally
       @error = e
       @params = params || {}
 
+      f = ActionDispatch::Http::ParameterFilter.new(Rails.application.config.filter_parameters)
+      @params = f.filter @params
+
       @@callback.call(@message, @status, @error, @params) if defined?(@@callback) && @@callback.respond_to?(:call)
-      
+
       log
     end
 
