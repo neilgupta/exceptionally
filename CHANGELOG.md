@@ -2,6 +2,10 @@
 
 [https://www.github.com/neilgupta/exceptionally](https://www.github.com/neilgupta/exceptionally)
 
+## v1.4.1 (06/29/2016)
+
+* Filter sensitive request parameters using Rails' filter_parameters list
+
 ## v1.4.0 (12/15/2015)
 
 * Remove built-in support for `Pundit::NotAuthorizedError` errors
