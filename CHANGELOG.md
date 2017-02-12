@@ -2,6 +2,10 @@
 
 [https://www.github.com/neilgupta/exceptionally](https://www.github.com/neilgupta/exceptionally)
 
+## v1.4.2 (02/11/2017)
+
+* Add Rails 5 support
+
 ## v1.4.1 (06/29/2016)
 
 * Filter sensitive request parameters using Rails' filter_parameters list
