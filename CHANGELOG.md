@@ -2,6 +2,10 @@
 
 [https://www.github.com/neilgupta/exceptionally](https://www.github.com/neilgupta/exceptionally)
 
+## v1.4.3 (08/28/2020)
+
+* Add Rails 6 support
+
 ## v1.4.2 (02/11/2017)
 
 * Add Rails 5 support
