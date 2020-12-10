@@ -152,7 +152,7 @@ See [changelog](https://github.com/neilgupta/exceptionally/blob/master/CHANGELOG
 
 ## Author
 
-Neil Gupta [http://metamorphium.com](http://metamorphium.com)
+Neil Gupta [https://neil.gg](https://neil.gg)
 
 ## License
 
