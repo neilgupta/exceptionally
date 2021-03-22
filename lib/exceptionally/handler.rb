@@ -6,7 +6,9 @@ module Exceptionally
       @error = e
       @params = params || {}
 
-      f = ActionDispatch::Http::ParameterFilter.new(Rails.application.config.filter_parameters)
+      # ParameterFilter moved to ActiveSupport in rails 6
+      filter = defined?(ActiveSupport::ParameterFilter) ? ActiveSupport::ParameterFilter : ActionDispatch::Http::ParameterFilter
+      f = filter.new(Rails.application.config.filter_parameters)
       @params = f.filter @params
 
       @@callback.call(@message, @status, @error, @params) if defined?(@@callback) && @@callback.respond_to?(:call)
