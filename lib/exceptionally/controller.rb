@@ -11,11 +11,17 @@ module Exceptionally
       rescue_from ActiveRecord::RecordNotFound, :with => :missing_record_handler
       rescue_from ActiveRecord::RecordInvalid, :with => :record_invalid_handler
       rescue_from ActiveRecord::RecordNotSaved, :with => :record_not_saved
+      rescue_from ActionController::ParameterMissing, :with => :missing_param_handler
     end
 
     # Raise custom error
     def exceptionally_handler(error)
       pass_to_error_handler(error)
+    end
+
+    # Raise 400 error
+    def missing_param_handler(error)
+      pass_to_error_handler(error, 400)
     end
 
     # Raise 404 error

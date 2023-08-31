@@ -83,6 +83,7 @@ Exceptionally will handle the following errors by default:
 * ActiveRecord::RecordNotFound
 * ActiveRecord::RecordInvalid
 * ActiveRecord::RecordNotSaved
+* ActionController::ParameterMissing
 * Exceptionally errors (see below for available errors)
 
 If there are additional errors that you want to assign status codes to and pass to Exceptionally, you can add the following to the top of your `application_controller.rb`:
@@ -140,6 +141,10 @@ By abstracting all of the exception handling logic, Exceptionally DRY's up your 
 ## Changelog
 
 See [changelog](https://github.com/neilgupta/exceptionally/blob/master/CHANGELOG.md) to check for breaking changes between versions.
+
+## Development
+
+Run tests with `bundle exec rspec`
 
 ## Author
 

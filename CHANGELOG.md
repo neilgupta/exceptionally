@@ -5,7 +5,8 @@
 ## v1.5.0 (08/31/2023)
 
 * Add Rails 7.0 support
-* Add built-in rescue of ActiveRecord::RecordNotSaved error
+* Add built-in rescue for ActiveRecord::RecordNotSaved
+* Add built-in rescue for ActionController::ParameterMissing
 * **Breaking**: Drop built-in error reporting to Raven, Airbrake, and New Relic
 * **Breaking**: Drop built-in error handling of ApiPie errors
 
