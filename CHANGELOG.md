@@ -2,6 +2,13 @@
 
 [https://www.github.com/neilgupta/exceptionally](https://www.github.com/neilgupta/exceptionally)
 
+## v1.5.0 (08/31/2023)
+
+* Add Rails 7.0 support
+* Add built-in rescue of ActiveRecord::RecordNotSaved error
+* **Breaking**: Drop built-in error reporting to Raven, Airbrake, and New Relic
+* **Breaking**: Drop built-in error handling of ApiPie errors
+
 ## v1.4.4 (03/22/2021)
 
 * Add Rails 6.1 support

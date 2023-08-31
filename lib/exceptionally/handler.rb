@@ -23,13 +23,6 @@ module Exceptionally
     def log
       # Log 5xx errors
       if @status >= 500 && @error
-        # Support Sentry, Airbrake, and New Relic out of box, but only in production
-        if Exceptionally.report_errors
-          Raven.capture_exception(@error, {logger: 'Exceptionally', extra: {params: @params}}) if defined?(Raven) && Raven.respond_to?(:capture_exception)
-          Airbrake.notify(@error, :parameters => @params) if defined?(Airbrake) && Airbrake.respond_to?(:notify)
-          NewRelic::Agent.notice_error(@error) if defined?(NewRelic) && defined?(NewRelic::Agent) && NewRelic::Agent.respond_to?(:notice_error)
-        end
-
         Rails.logger.error(@error.to_s)
         Rails.logger.error("Parameters: #{@params.to_s}") unless @params.blank?
         Rails.logger.error(@error.backtrace.join("\n")) unless @error.backtrace.blank?

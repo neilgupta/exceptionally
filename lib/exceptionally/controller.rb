@@ -10,20 +10,12 @@ module Exceptionally
       rescue_from Exceptionally::Error, :with => :exceptionally_handler
       rescue_from ActiveRecord::RecordNotFound, :with => :missing_record_handler
       rescue_from ActiveRecord::RecordInvalid, :with => :record_invalid_handler
-      if defined?(Apipie)
-        rescue_from Apipie::ParamMissing, :with => :missing_param
-        rescue_from Apipie::ParamInvalid, :with => :invalid_param
-      end
+      rescue_from ActiveRecord::RecordNotSaved, :with => :record_not_saved
     end
 
     # Raise custom error
     def exceptionally_handler(error)
       pass_to_error_handler(error)
-    end
-
-    # Raise 400 error
-    def missing_param(error)
-      pass_to_error_handler(error, 400)
     end
 
     # Raise 404 error
@@ -37,18 +29,18 @@ module Exceptionally
     end
 
     # Raise 422 error
-    def invalid_param(error)
-      pass_to_error_handler(error, 422)
+    def record_not_saved(error)
+      pass_to_error_handler(error, 422, {validations: error.record.try(:errors)})
     end
 
-    def pass_to_error_handler(error, status = nil)
+    def pass_to_error_handler(error, status = nil, extra = {})
       status ||= error.try(:status) || 500
       Exceptionally::Handler.new(error.message, status, error, params)
-      render_error(error, status)
+      render_error(error, status, extra)
     end
 
-    def render_error(error, status)
-      render json: {error: error.message}, status: status
+    def render_error(error, status = 500, extra = {})
+      render json: {error: error.message}.merge(extra || {}), status: status || 500
     end
 
   end

@@ -38,19 +38,11 @@ In addition to seamlessly abstracting your exception logic and returning clean J
 
 If you raise a 500-level error, Exceptionally will log the error, backtrace, and relevant parameters to Rails.logger.
 
-### Error Reporting
-
-Exceptionally supports reporting 500-level errors to [Sentry](http://getsentry.com), [Airbrake](http://airbrake.io), and [New Relic](http://newrelic.com) out of the box, and will notify those services if you have their gems installed. By default, this is only enabled in your `production` environment, but you can control this by setting in `config/initializers/exceptionally.rb`:
-
-```ruby
-Exceptionally.report_errors = true
-```
-
 ### Customizable
 
 #### Add a custom error handler
 
-Need to add more logging, integrate a different service than those listed above, use [BacktraceCleaner](http://api.rubyonrails.org/classes/ActiveSupport/BacktraceCleaner.html), or do something else with the errors before they're returned to the user? Just add the following to `config/initializers/exceptionally.rb`:
+Need to add more logging, integrate with Sentry, use [BacktraceCleaner](http://api.rubyonrails.org/classes/ActiveSupport/BacktraceCleaner.html), or do something else with the errors before they're returned to the user? Just add the following to `config/initializers/exceptionally.rb`:
 
 ```ruby
 Exceptionally::Handler.before_render do |message, status, error, params|
@@ -90,8 +82,7 @@ Exceptionally will handle the following errors by default:
 * ArgumentErrors
 * ActiveRecord::RecordNotFound
 * ActiveRecord::RecordInvalid
-* Apipie::ParamMissing (if using [Apipie](https://github.com/Apipie/apipie-rails))
-* Apipie::ParamInvalid (if using [Apipie](https://github.com/Apipie/apipie-rails))
+* ActiveRecord::RecordNotSaved
 * Exceptionally errors (see below for available errors)
 
 If there are additional errors that you want to assign status codes to and pass to Exceptionally, you can add the following to the top of your `application_controller.rb`:
@@ -102,11 +93,11 @@ rescue_from SomeGem::NotAuthorizedError, :with => :not_authorized_error
 
 # Tell Exceptionally you want this treated as a 401 error
 def not_authorized_error(error)
-  pass_to_error_handler(error, 401)
+  pass_to_error_handler(error, 401, {caught_you: true})
 end
 ```
 
-`pass_to_error_handler` takes a Ruby Exception object and a status code. If no status code is provided, it will default to 500.
+`pass_to_error_handler` takes a Ruby Exception object, a status code, and an optional hash that will be returned in the json by merging it with the error message. If no status code is provided, it will default to 500.
 
 ## Available Errors
 
@@ -144,7 +135,7 @@ You can also raise an error with just the HTTP status code by using `Exceptional
 
 ## Why use Exceptionally?
 
-By abstracting all of the exception handling logic, Exceptionally DRY's up your code and makes it easier to read. If you later decide to change the format of your error responses, you just need to edit `render_error` in one place. Exceptionally also transparently handles ActiveRecord, Apipie, and other generic exceptions for you, so that your app is less likely to crash. Additionally, you get a bunch of logging and error reporting functionality for free.
+By abstracting all of the exception handling logic, Exceptionally DRY's up your code and makes it easier to read. If you later decide to change the format of your error responses, you just need to edit `render_error` in one place. Exceptionally also transparently handles ActiveRecord and other generic exceptions for you, so that your app is less likely to crash. Additionally, you get a bunch of logging and error reporting functionality for free.
 
 ## Changelog
 
@@ -156,4 +147,4 @@ Neil Gupta [https://neil.gg](https://neil.gg)
 
 ## License
 
-The MIT License (MIT) Copyright (c) 2015 Neil Gupta. See [MIT-LICENSE](https://raw.github.com/neilgupta/exceptionally/master/MIT-LICENSE)
+The MIT License (MIT) Copyright (c) 2023 Neil Gupta. See [MIT-LICENSE](https://raw.github.com/neilgupta/exceptionally/master/MIT-LICENSE)
